@@ -15,10 +15,10 @@ from ultralytics.yolo.utils import ops
 # from models.models import Darknet
 
 
-# retina_masks = True
-# conf = 0.25
-# iou = 0.7
-# agnostic_nms = False
+retina_masks = True
+conf = 0.25
+iou = 0.7
+agnostic_nms = False
 
 def postprocess(preds, img, orig_imgs, retina_masks, conf, iou, agnostic_nms=False):
     """TODO: filter by classes."""
@@ -87,8 +87,8 @@ class FastSam(object):
         # cv2.imwrite("test.jpg", inp[0].transpose(1, 2, 0) * 255)
         # mask, proto, _, _, _, _ = self.model.run(inp)
         preds = self.model.run(inp)
-        # print([x.shape for x in preds])
-        # exit(1)
+        print([x.shape for x in preds])
+        exit(1)
         data_0 = torch.from_numpy(preds[5])
         data_1 = [[torch.from_numpy(preds[2]), torch.from_numpy(preds[3]), torch.from_numpy(preds[4])], torch.from_numpy(preds[1]), torch.from_numpy(preds[0])]
         preds = [data_0, data_1]
