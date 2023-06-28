@@ -623,6 +623,7 @@ def process_mask_native(protos, masks_in, bboxes, shape):
     Returns:
       masks (torch.Tensor): The returned masks with dimensions [h, w, n]
     """
+    print(protos.shape)
     c, mh, mw = protos.shape  # CHW
     masks = (masks_in @ protos.float().view(c, -1)).sigmoid().view(-1, mh, mw)
     gain = min(mh / shape[0], mw / shape[1])  # gain  = old / new
