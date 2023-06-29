@@ -227,3 +227,4 @@ The model is licensed under the [Apache 2.0 license](LICENSE).
     bash onnx2trt.sh
     python inference_trt.py
 ```
+![Inferring TRT](outputs/det_seg.png)

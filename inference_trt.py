@@ -70,8 +70,8 @@ def pre_processing(img_origin, imgsz=1024):
 
 class FastSam(object):
     def __init__(self, 
-            model_weights = '/models/FastSam/fast_sam.trt', 
-            max_size = 640):
+            model_weights = '/models/fastSAm_wrapper/fast_sam_1024.trt', 
+            max_size = 1024):
         self.imgsz = (max_size, max_size)
         # Load model
         self.model = TrtModelNMS(model_weights, max_size)
@@ -97,7 +97,7 @@ class FastSam(object):
         return masks
 
 if __name__ == '__main__':
-    model = FastSam(model_weights="/models/FastSam/fast_sam.trt")
+    model = FastSam(model_weights="/models/fastSAm_wrapper/fast_sam_1024.trt")
     img = cv2.imread('/models/FastSam/images/cat.jpg')
     masks = model.segment(img)
     print("[Ouput]: ", masks.shape)
