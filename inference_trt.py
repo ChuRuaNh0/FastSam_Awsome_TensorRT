@@ -48,10 +48,24 @@ def postprocess(preds, img, orig_imgs, retina_masks, conf, iou, agnostic_nms=Fal
             Results(orig_img=orig_img, path=img_path, names="1213", boxes=pred[:, :6], masks=masks))
     return results
 
-def preprocess(bgr, size):
-    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-    rgb = cv2.resize(rgb, (size, size))
-    rgb = np.array([rgb], dtype = np.float32) / 255.0
+def pre_processing(img_origin, imgsz=1024):
+    h, w = img_origin.shape[:2]
+    if h>w:
+        scale   = min(imgsz / h, imgsz / w)
+        inp     = np.zeros((imgsz, imgsz, 3), dtype = np.uint8)
+        nw      = int(w * scale)
+        nh      = int(h * scale)
+        a = int((nh-nw)/2) 
+        inp[: nh, a:a+nw, :] = cv2.resize(cv2.cvtColor(img_origin, cv2.COLOR_BGR2RGB), (nw, nh))
+    else:
+        scale   = min(imgsz / h, imgsz / w)
+        inp     = np.zeros((imgsz, imgsz, 3), dtype = np.uint8)
+        nw      = int(w * scale)
+        nh      = int(h * scale)
+        a = int((nw-nh)/2) 
+
+        inp[a: a+nh, :nw, :] = cv2.resize(cv2.cvtColor(img_origin, cv2.COLOR_BGR2RGB), (nw, nh))
+    rgb = np.array([inp], dtype = np.float32) / 255.0
     return np.transpose(rgb, (0, 3, 1, 2))
 
 class FastSam(object):
@@ -65,7 +79,7 @@ class FastSam(object):
 
     def segment(self, bgr_img):
         ## Padded resize
-        inp = preprocess(bgr_img, self.imgsz)
+        inp = pre_processing(bgr_img, self.imgsz[0])
         ## Inference
         t1 = time.time()
         print("[Input]: ", inp[0].transpose(0, 1, 2).shape)
@@ -79,13 +93,12 @@ class FastSam(object):
  
         image_with_masks = segment_everything(bgr_img, result, input_size=self.imgsz)
 
-
-        cv2.imwrite(f"obj_segment.png", image_with_masks)
+        cv2.imwrite(f"/models/FastSam/outputs/obj_segment_trt.png", image_with_masks)
         return masks
 
 if __name__ == '__main__':
     model = FastSam(model_weights="/models/FastSam/fast_sam.trt")
-    img = cv2.imread('/models/FastSam/cat.jpg')
+    img = cv2.imread('/models/FastSam/images/cat.jpg')
     masks = model.segment(img)
     print("[Ouput]: ", masks.shape)
 

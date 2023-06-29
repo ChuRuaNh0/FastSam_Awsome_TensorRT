@@ -215,6 +215,13 @@ The model is licensed under the [Apache 2.0 license](LICENSE).
     python pt2onnx.py
 ```
 
+## INFER ONNX
+```
+    python infer_onnx.py
+```
+
+![Inferring Onnx](outputs/obj.png)
+
 ## TensorRT (You can deploy on Triton Server by tensort plan)
 ```
     bash onnx2trt.sh
