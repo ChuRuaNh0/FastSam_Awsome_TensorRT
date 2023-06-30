@@ -28,11 +28,13 @@ https://github.com/CASIA-IVA-Lab/FastSAM
     python infer_onnx.py
 ```
 
-![Inferring Onnx]<img src="outputs/cat.jpg" width="500" /><img src="outputs/obj.png" width="500" />
+<img src="images/cat.jpg" width="300" height="600" />
+<img src="outputs/obj.png" width="300" height="600"/>
 
 ## TensorRT (You can deploy on Triton Server by tensort plan)
 ```
     bash onnx2trt.sh
     python inference_trt.py
 ```
-![Inferring TRT]<img src="outputs/obj_trt.png" width="500" /><img src="outputs/obj_trt.png" width="500" />
+<img src="images/cong-torii-noi-tieng-nhat-ban.jpg" width="500" />
+<img src="outputs/obj_trt.png" width="500" />
